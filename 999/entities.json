@@ -1,11 +1,11 @@
 {
 	"hypurrfi": {
 		"name": "HypurrFi",
-		"logo": "https://app.hypurr.fi/hypurr-paw.svg",
+		"logo": "hypurr-paw.svg",
 		"description": "HypurrFi is a DeFi platform on HyperEVM providing yield optimization strategies.",
 		"url": "https://app.hypurr.fi/",
 		"addresses": {
-			"0x30988479c2e6a03e7fb65138b94762d41a733458": "HypurrFi Capital Allocator"
+			"0x30988479C2E6a03E7fB65138b94762D41a733458": "HypurrFi Capital Allocator"
 		},
 		"social": {
 			"twitter": "HypurrFi"
@@ -13,7 +13,7 @@
 	},
 	"clearstar": {
 		"name": "ClearStar",
-		"logo": "https://app.euler.finance/entities/clearstar.svg",
+		"logo": "clearstar.svg",
 		"description": "Designing and curating institutional-grade strategies across decentralized markets, underpinned by rigorous risk management.",
 		"url": "https://www.clearstar.xyz/",
 		"addresses": {
@@ -25,7 +25,7 @@
 	},
 	"re7-labs": {
 		"name": "Re7 Labs",
-		"logo": "https://app.euler.finance/entities/re7labs.png",
+		"logo": "re7labs.png",
 		"description": "Re7 Labs is a research-driven crypto investment firm focused on yield strategies and risk management.",
 		"url": "https://www.re7.capital/",
 		"addresses": {
