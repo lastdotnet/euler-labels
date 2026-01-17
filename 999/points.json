@@ -2,7 +2,7 @@
 	{
 		"name": "2x HypurrFi Points (HP)",
 		"logo": "hypurr-paw.svg",
-		"entity": "hypurrfi",
+		"entity": ["hypurrfi"],
 		"liabilityVaults": [
 			"0xF73c654d468f5485bF15F3470B78851a49257704",
 			"0x443100d1149D6d925Edb044248BBE32c5C7Ae955",
