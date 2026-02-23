@@ -1,198 +1,203 @@
 const fs = require("node:fs");
-const {
-	utils: { getAddress },
-} = require("ethers");
+const path = require("node:path");
+const { loadJsonFile, saveJsonFile, fixAddress } = require("./utils");
 
 // Get all chain directories
 const chainDirs = fs.readdirSync(".").filter((dir) => /^\d+$/.test(dir));
 
-function fixAddress(address) {
-	try {
-		return getAddress(address);
-	} catch (error) {
-		throw Error(`Invalid address ${address}: ${error.message}`);
-	}
-}
-
 function fixAddressesInArray(addresses, context) {
-	return addresses.map((address) => {
-		const fixedAddress = fixAddress(address);
-		if (fixedAddress !== address) {
-			return {
-				changed: true,
-				message: `Fixing ${context}: ${address} -> ${fixedAddress}`,
-				value: fixedAddress,
-			};
+	let changed = false;
+	const fixedAddresses = (addresses || []).map((address) => {
+		try {
+			const fixedAddress = fixAddress(address);
+			if (fixedAddress !== address) {
+				console.log(`Fixing ${context}: ${address} -> ${fixedAddress}`);
+				changed = true;
+				return fixedAddress;
+			}
+		} catch (error) {
+			console.error(`Warning: ${context}: ${error.message}`);
 		}
-		return { changed: false, value: address };
+		return address;
 	});
+	return { result: fixedAddresses, changed };
 }
 
 function fixAddressesInObject(obj, context) {
 	const result = {};
-	let changes = false;
-	const changesList = [];
+	let changed = false;
 
-	for (const [key, value] of Object.entries(obj)) {
-		const fixedKey = fixAddress(key);
-		if (fixedKey !== key) {
-			changes = true;
-			const message = `Fixing ${context}: ${key} -> ${fixedKey}`;
-			console.log(message);
-			changesList.push(message);
+	for (const [key, value] of Object.entries(obj || {})) {
+		try {
+			const fixedKey = fixAddress(key);
+			if (fixedKey !== key) {
+				console.log(`Fixing ${context}: ${key} -> ${fixedKey}`);
+				changed = true;
+			}
+			result[fixedKey] = value;
+		} catch (error) {
+			console.error(`Warning: ${context}: ${error.message}`);
+			result[key] = value;
 		}
-		result[fixedKey] = value;
 	}
 
-	return { result, changes, changesList };
-}
-
-function fixBiomeFormatting(content) {
-	// Remove trailing commas in arrays and objects
-	let fixed = content.replace(/,(\s*[}\]])/g, "$1");
-
-	// Ensure consistent spacing around colons in objects, but not in URLs
-	fixed = fixed.replace(/([^"\s]):(?=\s*[{"])/g, "$1 :");
-
-	// Ensure consistent spacing around commas
-	fixed = fixed.replace(/,(\S)/g, ", $1");
-
-	return fixed;
+	return { result, changed };
 }
 
 function fixChain(chainId) {
 	console.log(`\nProcessing chain ${chainId}...`);
 
-	// Read all JSON files
-	const files = {
-		entities: JSON.parse(fs.readFileSync(`${chainId}/entities.json`, "utf8")),
-		vaults: JSON.parse(fs.readFileSync(`${chainId}/vaults.json`, "utf8")),
-		points: JSON.parse(fs.readFileSync(`${chainId}/points.json`, "utf8")),
-		products: JSON.parse(fs.readFileSync(`${chainId}/products.json`, "utf8")),
-		opportunities: JSON.parse(
-			fs.readFileSync(`${chainId}/opportunities.json`, "utf8"),
-		),
-	};
+	const fileNames = [
+		"entities.json",
+		"vaults.json",
+		"points.json",
+		"products.json",
+		"opportunities.json",
+	];
+	const files = {};
 
-	let changes = false;
-	const changesList = [];
+	for (const fileName of fileNames) {
+		const filePath = path.join(chainId, fileName);
+		if (fs.existsSync(filePath)) {
+			files[fileName] = {
+				data: loadJsonFile(filePath),
+				changed: false,
+			};
+		}
+	}
 
 	// Fix entity addresses
-	for (const [entityId, entity] of Object.entries(files.entities)) {
-		if (entity.addresses) {
-			const {
-				result,
-				changes: entityChanges,
-				changesList: entityChangesList,
-			} = fixAddressesInObject(entity.addresses, `entities.${entityId}`);
-			if (entityChanges) {
-				changes = true;
-				changesList.push(...entityChangesList);
-				entity.addresses = result;
-			}
-		}
-	}
-
-	// Fix vault addresses
-	const {
-		result: fixedVaults,
-		changes: vaultChanges,
-		changesList: vaultChangesList,
-	} = fixAddressesInObject(files.vaults, "vault");
-	if (vaultChanges) {
-		changes = true;
-		changesList.push(...vaultChangesList);
-		files.vaults = fixedVaults;
-	}
-
-	// Fix product vault addresses
-	for (const [productId, product] of Object.entries(files.products)) {
-		if (product.vaults) {
-			const fixedAddresses = fixAddressesInArray(
-				product.vaults,
-				`vault address in products.${productId}`,
-			);
-			const productChanges = fixedAddresses.filter((a) => a.changed);
-			if (productChanges.length > 0) {
-				changes = true;
-				changesList.push(...productChanges.map((a) => a.message));
-				product.vaults = fixedAddresses.map((a) => a.value);
-			}
-		}
-
-		if (product.deprecatedVaults) {
-			const fixedAddresses = fixAddressesInArray(
-				product.deprecatedVaults,
-				`deprecated vault address in products.${productId}`,
-			);
-			const productChanges = fixedAddresses.filter((a) => a.changed);
-			if (productChanges.length > 0) {
-				changes = true;
-				changesList.push(...productChanges.map((a) => a.message));
-				product.deprecatedVaults = fixedAddresses.map((a) => a.value);
-			}
-		}
-	}
-
-	// Fix points addresses
-	for (const point of files.points) {
-		if (point.skipValidation) continue;
-
-		if (point.token) {
-			const fixedToken = fixAddress(point.token);
-			if (fixedToken !== point.token) {
-				changes = true;
-				const message = `Fixing token address in points.${point.name}: ${point.token} -> ${fixedToken}`;
-				console.log(message);
-				changesList.push(message);
-				point.token = fixedToken;
-			}
-		}
-
-		for (const field of ["collateralVaults", "liabilityVaults"]) {
-			if (point[field]) {
-				const fixedAddresses = fixAddressesInArray(
-					point[field],
-					`${field} address in points.${point.name}`,
+	if (files["entities.json"]) {
+		for (const [entityId, entity] of Object.entries(
+			files["entities.json"].data,
+		)) {
+			if (entity.addresses) {
+				const { result, changed } = fixAddressesInObject(
+					entity.addresses,
+					`entities.${entityId}`,
 				);
-				const pointChanges = fixedAddresses.filter((a) => a.changed);
-				if (pointChanges.length > 0) {
-					changes = true;
-					changesList.push(...pointChanges.map((a) => a.message));
-					point[field] = fixedAddresses.map((a) => a.value);
+				if (changed) {
+					entity.addresses = result;
+					files["entities.json"].changed = true;
 				}
 			}
 		}
 	}
 
-	const {
-		result: fixedOpportunities,
-		changes: opportunitiesChanges,
-		changesList: opportunitiesChangesList,
-	} = fixAddressesInObject(files.opportunities, "opportunities");
-
-	if (opportunitiesChanges) {
-		changes = true;
-		changesList.push(...opportunitiesChangesList);
-		files.opportunities = fixedOpportunities;
+	// Fix vault addresses
+	if (files["vaults.json"]) {
+		const { result, changed } = fixAddressesInObject(
+			files["vaults.json"].data,
+			"vault",
+		);
+		if (changed) {
+			files["vaults.json"].data = result;
+			files["vaults.json"].changed = true;
+		}
 	}
 
-	// Write back changes if any were made
-	if (changes) {
-		console.log(`\nWriting changes for chain ${chainId}:`);
-		console.log(`Found ${changesList.length} addresses to fix`);
+	// Fix product vault addresses
+	if (files["products.json"]) {
+		for (const [productId, product] of Object.entries(
+			files["products.json"].data,
+		)) {
+			const fields = ["vaults", "deprecatedVaults"];
+			for (const field of fields) {
+				if (product[field]) {
+					const { result, changed } = fixAddressesInArray(
+						product[field],
+						`${field} in products.${productId}`,
+					);
+					if (changed) {
+						product[field] = result;
+						files["products.json"].changed = true;
+					}
+				}
+			}
+		}
+	}
 
-		// Write all files with Biome formatting
-		for (const [filename, data] of Object.entries(files)) {
-			const content = JSON.stringify(data, null, 2);
-			const biomeFixed = fixBiomeFormatting(content);
-			fs.writeFileSync(`${chainId}/${filename}.json`, biomeFixed);
-			console.log(`- Updated ${filename}.json`);
+	// Fix points addresses
+	if (files["points.json"]) {
+		for (const point of files["points.json"].data) {
+			if (point.skipValidation) continue;
+
+			if (point.token) {
+				try {
+					const fixedToken = fixAddress(point.token);
+					if (fixedToken !== point.token) {
+						console.log(
+							`Fixing token address in points.${point.name}: ${point.token} -> ${fixedToken}`,
+						);
+						point.token = fixedToken;
+						files["points.json"].changed = true;
+					}
+				} catch (error) {
+					console.error(`Warning: points.${point.name}: ${error.message}`);
+				}
+			}
+
+			const fields = ["collateralVaults", "liabilityVaults"];
+			for (const field of fields) {
+				if (point[field]) {
+					const { result, changed } = fixAddressesInArray(
+						point[field],
+						`${field} in points.${point.name}`,
+					);
+					if (changed) {
+						point[field] = result;
+						files["points.json"].changed = true;
+					}
+				}
+			}
+		}
+	}
+
+	// Fix opportunities addresses
+	if (files["opportunities.json"]) {
+		const { result, changed } = fixAddressesInObject(
+			files["opportunities.json"].data,
+			"opportunities",
+		);
+		if (changed) {
+			files["opportunities.json"].data = result;
+			files["opportunities.json"].changed = true;
 		}
 
-		console.log(`\nAll changes saved for chain ${chainId}`);
-	} else {
-		console.log(`No malformed addresses found in chain ${chainId}`);
+		// Also fix safetyModule addresses inside opportunities
+		for (const [vaultId, opportunity] of Object.entries(
+			files["opportunities.json"].data,
+		)) {
+			if (opportunity.cozy?.safetyModule) {
+				try {
+					const fixedSM = fixAddress(opportunity.cozy.safetyModule);
+					if (fixedSM !== opportunity.cozy.safetyModule) {
+						console.log(
+							`Fixing safetyModule in opportunities.${vaultId}: ${opportunity.cozy.safetyModule} -> ${fixedSM}`,
+						);
+						opportunity.cozy.safetyModule = fixedSM;
+						files["opportunities.json"].changed = true;
+					}
+				} catch (error) {
+					console.error(`Warning: opportunities.${vaultId}: ${error.message}`);
+				}
+			}
+		}
+	}
+
+	// Write back only changed files
+	let chainChanged = false;
+	for (const [fileName, fileInfo] of Object.entries(files)) {
+		if (fileInfo.changed) {
+			const filePath = path.join(chainId, fileName);
+			console.log(`- Updating ${fileName}`);
+			saveJsonFile(filePath, fileInfo.data);
+			chainChanged = true;
+		}
+	}
+
+	if (!chainChanged) {
+		console.log(`No changes needed for chain ${chainId}`);
 	}
 }
 
