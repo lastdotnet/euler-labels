@@ -8,15 +8,11 @@ const chainDirs = fs.readdirSync(".").filter((dir) => /^\d+$/.test(dir));
 function fixAddressesInArray(addresses, context) {
 	let changed = false;
 	const fixedAddresses = (addresses || []).map((address) => {
-		try {
-			const fixedAddress = fixAddress(address);
-			if (fixedAddress !== address) {
-				console.log(`Fixing ${context}: ${address} -> ${fixedAddress}`);
-				changed = true;
-				return fixedAddress;
-			}
-		} catch (error) {
-			console.error(`Warning: ${context}: ${error.message}`);
+		const fixedAddress = fixAddress(address);
+		if (fixedAddress !== address) {
+			console.log(`Fixing ${context}: ${address} -> ${fixedAddress}`);
+			changed = true;
+			return fixedAddress;
 		}
 		return address;
 	});
@@ -28,17 +24,12 @@ function fixAddressesInObject(obj, context) {
 	let changed = false;
 
 	for (const [key, value] of Object.entries(obj || {})) {
-		try {
-			const fixedKey = fixAddress(key);
-			if (fixedKey !== key) {
-				console.log(`Fixing ${context}: ${key} -> ${fixedKey}`);
-				changed = true;
-			}
-			result[fixedKey] = value;
-		} catch (error) {
-			console.error(`Warning: ${context}: ${error.message}`);
-			result[key] = value;
+		const fixedKey = fixAddress(key);
+		if (fixedKey !== key) {
+			console.log(`Fixing ${context}: ${key} -> ${fixedKey}`);
+			changed = true;
 		}
+		result[fixedKey] = value;
 	}
 
 	return { result, changed };
@@ -63,6 +54,8 @@ function fixChain(chainId) {
 				data: loadJsonFile(filePath),
 				changed: false,
 			};
+		} else {
+			console.warn(`Warning: missing ${filePath}`);
 		}
 	}
 
@@ -123,17 +116,13 @@ function fixChain(chainId) {
 			if (point.skipValidation) continue;
 
 			if (point.token) {
-				try {
-					const fixedToken = fixAddress(point.token);
-					if (fixedToken !== point.token) {
-						console.log(
-							`Fixing token address in points.${point.name}: ${point.token} -> ${fixedToken}`,
-						);
-						point.token = fixedToken;
-						files["points.json"].changed = true;
-					}
-				} catch (error) {
-					console.error(`Warning: points.${point.name}: ${error.message}`);
+				const fixedToken = fixAddress(point.token);
+				if (fixedToken !== point.token) {
+					console.log(
+						`Fixing token address in points.${point.name}: ${point.token} -> ${fixedToken}`,
+					);
+					point.token = fixedToken;
+					files["points.json"].changed = true;
 				}
 			}
 
@@ -169,17 +158,13 @@ function fixChain(chainId) {
 			files["opportunities.json"].data,
 		)) {
 			if (opportunity.cozy?.safetyModule) {
-				try {
-					const fixedSM = fixAddress(opportunity.cozy.safetyModule);
-					if (fixedSM !== opportunity.cozy.safetyModule) {
-						console.log(
-							`Fixing safetyModule in opportunities.${vaultId}: ${opportunity.cozy.safetyModule} -> ${fixedSM}`,
-						);
-						opportunity.cozy.safetyModule = fixedSM;
-						files["opportunities.json"].changed = true;
-					}
-				} catch (error) {
-					console.error(`Warning: opportunities.${vaultId}: ${error.message}`);
+				const fixedSM = fixAddress(opportunity.cozy.safetyModule);
+				if (fixedSM !== opportunity.cozy.safetyModule) {
+					console.log(
+						`Fixing safetyModule in opportunities.${vaultId}: ${opportunity.cozy.safetyModule} -> ${fixedSM}`,
+					);
+					opportunity.cozy.safetyModule = fixedSM;
+					files["opportunities.json"].changed = true;
 				}
 			}
 		}
