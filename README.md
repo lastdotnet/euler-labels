@@ -6,7 +6,7 @@ If you have created a vault and wish to have it included in this database, pleas
 
 ## Schema
 
-Each network has a directory, named after its numeric `chainId`. For example, the Ethereum mainnet data is stored in directory `1/`.
+Each network has a directory, named after its numeric `chainId`. For example, the HyperEVM mainnet data is stored in directory `999/`.
 
 Inside each network's directory are JSON files that correspond to the following schemas. All keys are optional unless indicated as required.
 
@@ -15,7 +15,7 @@ Inside each network's directory are JSON files that correspond to the following 
 Each entry in this object corresponds to a company, organisation, or other entity. Each key is an **entity ID**, which is a unique string per entity. It should be in "URL slug" format (lowercase ASCII letters or numbers, separated by `-` characters).
 
 * `name`: Full, official name of the entity. (Required)
-* `logo`: The filename of a logo stored in the `logo/` directory.
+* `logo`: The URL of the logo.
 * `description`: Long-form description of the entity, displayed on the entity's page.
 * `url`: Website where users can learn more about the entity.
 * `addresses`: An object that indicates addresses controlled by this entity. Each key is a checksumed hex address, and each value is a human-meaningful description of what this address represents.
@@ -37,7 +37,7 @@ Each entry in this object corresponds to a lending product, which is primarily a
 * `description`: Long-form description of the product, displayed on the product's page.
 * `entity`: An entity ID that refers to the organisation responsible for governing and/or creating this vault, or a list of entity IDs if the vault is joint-managed.
 * `url`: Website where users can learn more about the product.
-* `logo`: The filename of a logo stored in the `logo/` directory.
+* `logo`: The URL of the logo.
 * `vaults`: An array of the vault addresses (in checksumed hex format) that comprise the product. Each vault must exist in the `vaults.json` file.
 * `deprecatedVaults`: An optional array of vault addresses (in checksumed hex format) that were previously part of this product but are now deprecated.
 * `deprecationReason`: An optional string providing an explanation for why the product or its vaults have been deprecated.
@@ -51,7 +51,7 @@ Each entry in this array corresponds to points available on deposits in a vault.
 * `description`: A long-form description of the points, displayed within points tooltips.
 * `skipTooltipPrefix`: If true, the tooltip text will not be prefixed with "Deposits earns {logo}".
 * `url`: A URL where users can learn more about the points.
-* `logo`: The filename of a logo stored in the `logo/` directory. (Required)
+* `logo`: The URL of the logo. (Required)
 * `collateralVaults`: An array of the vault addresses (in checksumed hex format) that offer these points. Each vault does not need to exist in the `vaults.json` file.
 * `liabilityVaults`: An array of the vault addresses (in checksumed hex format) that offer these points. Each vault does not need to exist in the `vaults.json` file.
 * `entity`: An entity ID that refers to the organisation responsible for governing and/or creating this vault, or a list of entity IDs if the vault is joint-managed.
@@ -65,10 +65,7 @@ Each entry in this object represents opportunities associated with specific vaul
 
 ## Logos
 
-Logos exist in the `logo/` directory, and should satisfy the following properties:
-
-* SVG/PNG (preferred) or JPG format
-* Square-shaped
+Logos should be provided as URLs to SVG/PNG (preferred) or JPG formats.
 
 ## Scripts
 
