@@ -1,0 +1,53 @@
+{
+	"clearstar-prime": {
+		"name": "Clearstar Prime",
+		"description": "Prime cluster vaults curated by Clearstar on HyperEVM, providing institutional-grade strategies with rigorous risk management.",
+		"entity": "clearstar",
+		"url": "https://www.clearstar.xyz/",
+		"vaults": [
+			"0xf73c654d468f5485bf15f3470b78851a49257704",
+			"0x443100d1149d6d925edb044248bbe32c5c7ae955",
+			"0x8a4545827df5446ba120b904e5306e58acca4e89",
+			"0xc200aab602cd7046389b5c8fb088884323f8dd0f",
+			"0x28fca2611d1dd8109c26f748cd2cf3bb4fc6d2cd",
+			"0x83c34784e355ad2670db77623b845273844fa480"
+		]
+	},
+	"clearstar-yield": {
+		"name": "Clearstar Yield",
+		"description": "Yield cluster vaults curated by Clearstar on HyperEVM, targeting enhanced yield strategies with active risk management.",
+		"entity": "clearstar",
+		"url": "https://www.clearstar.xyz/",
+		"vaults": [
+			"0xc7e7861352df6919e7152c007832c48a777f2a4c",
+			"0x97d30b40048ba3fc6b6628ce5e02e77f35b64fe0",
+			"0x3403176f548400772c39e64564f2b148bcdfb65e",
+			"0x64a3052570f5a1c241c6c8cd32f8f9ad411e6990",
+			"0x1739105522e4fc9675f857c859223d24dfe7593c",
+			"0xcaaa9a6e543b9af588dce91e6c35cb5fa1c7734c",
+			"0x61cb3b093b7125d593ccfa135c6e4e9d52d2e697",
+			"0x06bf901ce21450bab46cea74c4bb6f07e6859cd6",
+			"0x09a6ad87eff280755bdf3e2c863358d27d81262d",
+			"0x94f5c76a93f12057d73991ae5b4f70e9287b5b28",
+			"0xf9bb65e113418292d1a3555515fbd64637a0be18",
+			"0xbb7dc37dbc108d40bcdd60403ef7bfdd6489071e",
+			"0x23bf20b4d6e280eaca58826a541c9ee5401bd357",
+			"0xac207ffa0bfce194db18d1820902d48a2d948968",
+			"0x05a9b35b8426aff614ab563bbf9ab3905705432c"
+		]
+	},
+	"clearstar-scale": {
+		"name": "Clearstar Scale",
+		"description": "Scale cluster vaults curated by Clearstar on HyperEVM, enabling USDXL borrowing against exotic HyperEVM-native collaterals.",
+		"entity": "clearstar",
+		"url": "https://www.clearstar.xyz/",
+		"vaults": [
+			"0xd62e7c9e6b1e43cb06e1ba46243b128c81bc918c",
+			"0x0e8724954a5b2ca41146f11bd6008fbeeae50603",
+			"0xb2d7b74ff64e5f4908256e1c17487939f2435155",
+			"0x1ba03af962c99b36297e31f56b41be31c37452d5",
+			"0x6e02c17eb84e2b02a4cb93c086091d50ee74c16e",
+			"0x8231b0c73a265d745e6810bffeed83b6ed1501fb"
+		]
+	}
+}
