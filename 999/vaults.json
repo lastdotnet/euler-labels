@@ -123,5 +123,35 @@
 		"name": "HypurrFi Earn USDC",
 		"description": "Earn vaults curated by Clearstar for HypurrFi on HyperEVM",
 		"entity": "clearstar"
+	},
+	"0xD62e7C9e6b1E43Cb06e1ba46243b128c81bC918c": {
+		"name": "HypurrFi Scale USDXL",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
+	},
+	"0x0e8724954A5b2cA41146f11bd6008FbEeAe50603": {
+		"name": "HypurrFi Scale WHYPE",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
+	},
+	"0xb2D7b74FF64e5f4908256E1c17487939F2435155": {
+		"name": "HypurrFi Scale kHYPE",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
+	},
+	"0x1ba03AF962C99b36297e31f56B41bE31C37452d5": {
+		"name": "HypurrFi Scale lstHYPE",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
+	},
+	"0x6E02C17eb84e2b02A4cb93c086091D50eE74c16E": {
+		"name": "HypurrFi Scale beHYPE",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
+	},
+	"0x8231b0c73a265D745e6810BffeED83B6eD1501fB": {
+		"name": "HypurrFi Scale hwHYPE",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
+		"entity": "clearstar"
 	}
 }
