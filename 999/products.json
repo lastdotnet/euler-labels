@@ -47,5 +47,19 @@
 			"0xAc207FFa0bfcE194Db18D1820902D48a2d948968",
 			"0x05A9b35B8426aFf614aB563BBf9AB3905705432c"
 		]
+	},
+	"hypurrfi-scale": {
+		"name": "HypurrFi Scale",
+		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals.",
+		"entity": ["clearstar"],
+		"url": "https://hypurr.fi/",
+		"vaults": [
+			"0xD62e7C9e6b1E43Cb06e1ba46243b128c81bC918c",
+			"0x0e8724954A5b2cA41146f11bd6008FbEeAe50603",
+			"0xb2D7b74FF64e5f4908256E1c17487939F2435155",
+			"0x1ba03AF962C99b36297e31f56B41bE31C37452d5",
+			"0x6E02C17eb84e2b02A4cb93c086091D50eE74c16E",
+			"0x8231b0c73a265D745e6810BffeED83B6eD1501fB"
+		]
 	}
 }
