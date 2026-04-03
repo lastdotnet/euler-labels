@@ -1,9 +1,9 @@
 {
 	"hypurrfi": {
 		"name": "HypurrFi",
-		"logo": "https://app.hypurr.fi/hypurr-paw.svg",
+		"logo": "https://app.hypurrfi.com/hypurr-paw.svg",
 		"description": "HypurrFi is a DeFi platform on HyperEVM providing yield optimization strategies.",
-		"url": "https://app.hypurr.fi/",
+		"url": "https://app.hypurrfi.com/",
 		"addresses": {},
 		"social": {
 			"twitter": "HypurrFi"

@@ -1,14 +1,14 @@
 [
 	{
 		"name": "2x HypurrFi Points (HP)",
-		"logo": "https://app.hypurr.fi/hypurr-paw.svg",
+		"logo": "https://app.hypurrfi.com/hypurr-paw.svg",
 		"entity": ["hypurrfi"],
 		"liabilityVaults": [],
 		"skipValidation": true
 	},
 	{
 		"name": "3x HypurrFi Points (HP)",
-		"logo": "https://app.hypurr.fi/hypurr-paw.svg",
+		"logo": "https://app.hypurrfi.com/hypurr-paw.svg",
 		"entity": ["hypurrfi"],
 		"collateralVaults": [],
 		"skipValidation": true
