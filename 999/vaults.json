@@ -139,6 +139,11 @@
 		"description": "Earn vaults curated by Clearstar for HypurrFi on HyperEVM",
 		"entity": "clearstar"
 	},
+	"0x9522133c663ba8C2a8A7b4F63Dd2aC8DccCe1505": {
+		"name": "HypurrFi Earn USDG0",
+		"description": "Earn vaults curated by Clearstar for HypurrFi on HyperEVM",
+		"entity": "clearstar"
+	},
 	"0xD62e7C9e6b1E43Cb06e1ba46243b128c81bC918c": {
 		"name": "HypurrFi Scale USDXL",
 		"description": "USDXL-centric cluster enabling borrowing against exotic HyperEVM-native collaterals",
