@@ -1,4 +1,9 @@
 {
+	"0x57E0c24599c504F10EEe6E996d2679D2C510B5Bb": {
+		"name": "HypurrFi Yield syzUSD",
+		"description": "Yield-bearing HYPE leverage strategies, isolated from HypurrFi Prime Market",
+		"entity": "clearstar"
+	},
 	"0x43b8C2EBd6916DC95b40514Db1B08bE0c6fc327c": {
 		"name": "HypurrFi Yield fXRP",
 		"description": "Yield-bearing HYPE leverage strategies, isolated from HypurrFi Prime Market",
